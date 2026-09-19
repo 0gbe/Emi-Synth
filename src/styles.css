@@ -1,0 +1,331 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0c0b09;
+  --color-panel: #1c1a16;
+  --color-panel-lift: #26231e;
+  --color-panel-line: #3a342c;
+  --color-wood: #5a3826;
+  --color-wood-dark: #3a2318;
+  --color-wood-light: #7a4e36;
+  --color-cream: #e8dcc8;
+  --color-cream-dim: #b8a88c;
+  --color-ivory: #f3eee4;
+  --color-ivory-edge: #cfc3b0;
+  --color-ebony: #141210;
+  --color-ebony-hi: #2a2724;
+  --color-signal: #c6f000;
+  --color-signal-hot: #e8ff4a;
+  --color-signal-dim: #5a6a12;
+  --color-nickel: #c4c0b6;
+  --color-nickel-dark: #8a8578;
+  --color-led-off: #3a2018;
+  --color-led-red: #c44a32;
+
+  --font-sans: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --font-display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-chassis: 18px;
+
+  --shadow-chassis: 0 24px 60px rgba(0, 0, 0, 0.55), 0 2px 0 rgba(255, 255, 255, 0.06) inset;
+  --shadow-lit: 0 0 18px color-mix(in oklab, var(--color-signal) 65%, transparent);
+  --shadow-stamp: 4px 4px 0 0 var(--color-ink);
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --motion-quick: 150ms;
+  --motion-fast: 250ms;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html,
+  body,
+  #app {
+    min-height: 100dvh;
+    background: var(--color-ink);
+    color: var(--color-cream);
+  }
+
+  body {
+    margin: 0;
+    overscroll-behavior: none;
+    font-family: var(--font-sans);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  .wood-grain {
+    background-color: var(--color-wood);
+    background-image:
+      repeating-linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.08) 0px,
+        rgba(0, 0, 0, 0.08) 1px,
+        transparent 1px,
+        transparent 5px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.04) 0px,
+        transparent 2px,
+        rgba(0, 0, 0, 0.06) 3px,
+        transparent 7px
+      ),
+      linear-gradient(180deg, var(--color-wood-light), var(--color-wood) 40%, var(--color-wood-dark));
+  }
+
+  .panel-metal {
+    background-color: var(--color-panel);
+    background-image:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 18%, transparent 82%, rgba(0, 0, 0, 0.28)),
+      repeating-linear-gradient(
+        180deg,
+        transparent 0,
+        transparent 3px,
+        rgba(255, 255, 255, 0.012) 3px,
+        rgba(255, 255, 255, 0.012) 4px
+      );
+  }
+
+  .screw {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: radial-gradient(circle at 35% 30%, #d8d2c6, var(--color-nickel-dark) 55%, #4a463e);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    position: relative;
+  }
+
+  .screw::after {
+    content: "";
+    position: absolute;
+    inset: 35% 18%;
+    background: rgba(0, 0, 0, 0.45);
+    border-radius: 1px;
+    transform: rotate(28deg);
+  }
+
+  .ivory-key {
+    background: linear-gradient(180deg, #fffdf8 0%, var(--color-ivory) 55%, #e7dccb 100%);
+    box-shadow:
+      inset 0 1px 0 #fff,
+      inset 0 -10px 0 var(--color-ivory-edge),
+      0 10px 14px rgba(0, 0, 0, 0.28);
+    border: 1px solid color-mix(in oklab, var(--color-ebony) 18%, var(--color-ivory-edge));
+    border-bottom-color: var(--color-ivory-edge);
+  }
+
+  .ivory-key[data-active="true"] {
+    background: linear-gradient(180deg, var(--color-signal-hot), var(--color-signal) 70%, #9bb800);
+    box-shadow:
+      inset 0 -6px 0 #8aaa00,
+      0 0 18px color-mix(in oklab, var(--color-signal) 70%, transparent);
+    transform: translateY(3px);
+    border-color: color-mix(in oklab, var(--color-signal) 50%, black);
+  }
+
+  .ebony-key {
+    background: linear-gradient(180deg, var(--color-ebony-hi), var(--color-ebony) 40%, #050403);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      inset 0 -8px 0 #050403,
+      0 8px 10px rgba(0, 0, 0, 0.5);
+    border: 1px solid #050403;
+  }
+
+  .ebony-key[data-active="true"] {
+    background: linear-gradient(180deg, var(--color-signal-hot), var(--color-signal) 55%, #6a7800);
+    box-shadow:
+      inset 0 -5px 0 #4a5400,
+      0 0 16px color-mix(in oklab, var(--color-signal) 75%, transparent);
+    transform: translateY(2px);
+  }
+
+  .crt-bezel {
+    background: radial-gradient(120% 80% at 50% 20%, #1a2210, #070806 70%);
+    box-shadow:
+      inset 0 0 24px rgba(0, 0, 0, 0.65),
+      inset 0 0 0 1px color-mix(in oklab, var(--color-signal) 12%, transparent);
+  }
+
+  .knob-skirt {
+    background: radial-gradient(circle at 50% 30%, #3a342c, #161410 70%);
+    box-shadow:
+      0 6px 10px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .knob-cap {
+    background: radial-gradient(circle at 35% 28%, #f5efe4, var(--color-cream) 42%, #cbbfa8 78%, #9a8d76);
+    box-shadow:
+      inset 0 1px 0 #fff,
+      0 2px 2px rgba(0, 0, 0, 0.35);
+  }
+
+  .section-rule {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-panel-line), transparent);
+  }
+
+  .keybed {
+    height: 9.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ivory-key,
+  .ebony-key,
+  .power-overlay {
+    transition: none !important;
+  }
+}
+
+@media (min-width: 640px) {
+  .keybed {
+    height: 11.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .keybed {
+    height: 14rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .keybed {
+    height: 16.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .keybed {
+    height: 18.5rem;
+  }
+}
+
+/* Viewport really is landscape, or the chassis was rotated to match a sideways phone. */
+html[data-play="wide"] .synth-shell {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+}
+
+html[data-play="wide"] .synth-frame {
+  display: flex;
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+html[data-play="wide"] .synth-brand {
+  padding-top: 0.4rem;
+  padding-bottom: 0.3rem;
+}
+
+html[data-play="wide"] .synth-panel {
+  flex: 0 1 auto;
+  max-height: 42%;
+  margin-bottom: 0.25rem;
+  padding: 0.5rem;
+  overflow: auto;
+}
+
+html[data-play="wide"] .synth-face {
+  height: 100%;
+  min-height: 5rem;
+  max-height: 7rem;
+}
+
+html[data-play="wide"] .synth-board {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr) minmax(0, 12rem);
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+html[data-play="wide"] .synth-keys {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 11rem;
+  flex-direction: column;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+html[data-play="wide"] .keybed {
+  flex: 1 1 auto;
+  height: auto;
+  min-height: 11rem;
+}
+
+html[data-play="wide"] .key-caption {
+  display: flex;
+}
+
+html[data-play="wide"] .key-caption-black {
+  display: block;
+}
+
+html[data-play="wide"] .synth-subtitle {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  html[data-play="wide"] .synth-board {
+    grid-template-columns: 9.5rem minmax(0, 1fr) minmax(0, 16rem);
+    gap: 1rem;
+  }
+
+  html[data-play="wide"] .synth-face {
+    max-height: none;
+    min-height: 16rem;
+  }
+
+  html[data-play="wide"] .synth-subtitle {
+    display: block;
+  }
+
+  html[data-play="wide"] .keybed {
+    min-height: 16rem;
+    max-height: 22rem;
+  }
+}
+
+.play-stage-turned {
+  position: fixed;
+  z-index: 30;
+  top: 50%;
+  left: 50%;
+  width: 100dvh;
+  height: 100dvw;
+  overflow: hidden;
+  background: var(--color-ink);
+}
+
+.play-stage-turned[data-turn="90"] {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.play-stage-turned[data-turn="-90"] {
+  transform: translate(-50%, -50%) rotate(-90deg);
+}
